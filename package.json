@@ -1,0 +1,26 @@
+{
+  "name": "recast-alexa-pi-music",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "4.16.2",
+    "lodash": "4.17.4",
+    "mopidy": "0.5.0",
+    "spotify-web-api-node": "2.5.0"
+  },
+  "devDependencies": {
+    "eslint": "4.3.0",
+    "eslint-config-airbnb-base": "11.3.0",
+    "eslint-config-prettier": "2.4.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-prettier": "2.2.0",
+    "prettier": "1.9.2"
+  }
+}
