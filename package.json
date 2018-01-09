@@ -13,6 +13,7 @@
     "express": "4.16.2",
     "lodash": "4.17.4",
     "mopidy": "0.5.0",
+    "recastai": "^3.7.0",
     "spotify-web-api-node": "2.5.0"
   },
   "devDependencies": {

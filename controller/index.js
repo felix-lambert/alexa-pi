@@ -9,16 +9,27 @@ const spotifyApi = new SpotifyWebApi({
 });
 
 // Retrieve an access token.
-spotifyApi
-  .clientCredentialsGrant()
+spotifyApi.clientCredentialsGrant()
   .then(data => {
     console.log('The access token expires in ' + data.body.expires_in);
     console.log('The access token is ' + data.body.access_token);
+    console.log('The refresh token is ' + data.body['refresh_token']);
 
-    // Save the access token so that it's used in future calls
     spotifyApi.setAccessToken(data.body.access_token);
   })
   .catch(err => console.log('Something went wrong when retrieving an access token', err));
+
+// clientId, clientSecret and refreshToken has been set on the api object previous to this call.
+spotifyApi.refreshAccessToken()
+  .then(function(data) {
+    console.log('The access token has been refreshed!');
+
+    // Save the access token so that it's used in future calls
+    spotifyApi.setAccessToken(data.body['access_token']);
+  }, function(err) {
+    console.log('Could not refresh access token', err);
+  });
+
 
 const getUri = data => {
   let uri = _.get(data, 'body.tracks.items[0].uri');
@@ -29,6 +40,14 @@ const getUri = data => {
 };
 
 const playMusic = (req, res) => {
+  console.log('inside play music')
+  console.log(req.body)
+  const exec = require('child_process').exec;
+  console.log('inside set timeout')
+  exec("/home/pi/alexa-pi/controller/speech.sh 'ok I will play you the song'")
+ 
+  setTimeout(() => {
+
   const play = () => {
     const album = _.get(req.body.nlp, 'entities.album[0].raw', null);
     const song = _.get(req.body.nlp, 'entities.song[0].raw', null);
@@ -59,6 +78,8 @@ const playMusic = (req, res) => {
   });
   mopidy.on('state:online', play);
   res.send();
+}, 10000);
+
 };
 
 const musicStyle = (req, res) => {
