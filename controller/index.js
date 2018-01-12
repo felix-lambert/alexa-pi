@@ -14,8 +14,8 @@ const spotifyApi = new SpotifyWebApi({
 spotifyApi
   .clientCredentialsGrant()
   .then(data => {
-    console.log('The access token expires in ' + data.body.expires_in);
-    console.log('The access token is ' + data.body.access_token);
+    console.log('The access token expires in ' + data.body.expires_in + '\n');
+    console.log('The access token is ' + data.body.access_token + '\n');
 
     // If you've got an access token and want to use it for all calls, simply use the api object's set method.
     spotifyApi.setAccessToken(data.body.access_token);
