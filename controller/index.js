@@ -13,25 +13,19 @@ const spotifyApi = new SpotifyWebApi({
 spotifyApi
   .clientCredentialsGrant()
   .then(data => {
-    console.log('The access token expires in ' + data.body.expires_in);
-    console.log('The access token is ' + data.body.access_token);
+    console.log('The access token expires in ' + data.body.expires_in + '\n');
+    console.log('The access token is ' + data.body.access_token + '\n');
 
     spotifyApi.setAccessToken(data.body.access_token);
   })
   .catch(err => console.log('Something went wrong when retrieving an access token', err));
 
 // clientId, clientSecret and refreshToken has been set on the api object previous to this call.
-spotifyApi
-  .refreshAccessToken()
-  .then(data => {
-    console.log('The access token has been refreshed!');
 
-    // Save the access token so that it's used in future calls
-    spotifyApi.setAccessToken(data.body.access_token);
-  })
-  .catch(err => {
-    console.log('Could not refresh access token', err);
-  });
+function myFunc(arg) {
+  console.log(`arg was => ${arg}`);
+}
+
 
 const getUri = data => {
   let uri = _.get(data, 'body.tracks.items[0].uri');

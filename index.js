@@ -7,10 +7,22 @@ const build = new recastai.build('a9a139557223331345e7d917072c8ce0', 'en');
 
 const { musicStyle, playMusic } = require('./controller/');
 
-// Instantiate Recast.AI SDK
+var fs = require('fs');
 
+
+var trueLog = console.log;
+console.log = function(msg) {
+    fs.appendFile("/home/pi/alexa.log", msg, function(err) {
+        if(err) {
+            return trueLog(err);
+        }
+    });
+   trueLog(msg); //uncomment if you want logs
+}
+
+// Instantiate Recast.AI SDK
 const app = express();
-const port = 5000;
+const port = 80;
 
 app.use(bodyParser.json());
 
@@ -28,7 +40,7 @@ app.post('/hello', (req, res) => {
     'Hello my friend. Tell me a song, and I will play it for you!',
   ];
   const randomAnswer = Math.floor(Math.random() * answerArray.length);
-  console.log(answerArray[randomAnswer]);
+  console.log(answerArray[randomAnswer] + '\n');
   res.send();
   // exec(`/home/pi/alexa-pi/controller/speech.sh ${randomAnswer}`);
 });
@@ -88,6 +100,10 @@ app.post('joke', (req, res) => {
   res.send();
 });
 
+process.on('SIGINT', function() {
+   process.exit();
+});
+
 app.listen(port, () => {
-  console.log('Server is running on port ' + port);
+  console.log('Server is running on port ' + port + '\n');
 });
