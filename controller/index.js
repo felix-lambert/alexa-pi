@@ -10,28 +10,17 @@ const spotifyApi = new SpotifyWebApi({
 });
 
 // Retrieve an access token.
+// clientId and clientSecret has been set on the api object previous to this call.
 spotifyApi
   .clientCredentialsGrant()
   .then(data => {
     console.log('The access token expires in ' + data.body.expires_in);
     console.log('The access token is ' + data.body.access_token);
 
+    // If you've got an access token and want to use it for all calls, simply use the api object's set method.
     spotifyApi.setAccessToken(data.body.access_token);
   })
   .catch(err => console.log('Something went wrong when retrieving an access token', err));
-
-// clientId, clientSecret and refreshToken has been set on the api object previous to this call.
-spotifyApi
-  .refreshAccessToken()
-  .then(data => {
-    console.log('The access token has been refreshed!');
-
-    // Save the access token so that it's used in future calls
-    spotifyApi.setAccessToken(data.body.access_token);
-  })
-  .catch(err => {
-    console.log('Could not refresh access token', err);
-  });
 
 const getUri = data => {
   let uri = _.get(data, 'body.tracks.items[0].uri');
@@ -65,6 +54,7 @@ const playMusic = (req, res) => {
 
   setTimeout(() => {
     const play = () =>
+      // use the wrapper's helper methods to make the request to Spotify's Web API. The wrapper // uses promises, so you need to provide a success callback as well as an error callback
       spotifyApi
         .searchTracks(searchString)
         .then(getUri)
